@@ -12,8 +12,7 @@ function App() {
 
   useEffect(() => {
     //everytime app loads, get current user, if found, login i.e. make authenticated else unauthenticated
-    auth_service_obj
-      .get_current_user()
+    auth_service_obj.get_current_user()
       .then((user_data) => {
         if (user_data) {
           dispatch(login(user_data));
