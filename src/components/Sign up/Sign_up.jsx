@@ -57,7 +57,7 @@ function Sign_up() {
                     required : true,
                     validate:{
                         matchPattern : (value) =>
-                            /^[a-zA-Z\s'-]{2,}$/.test(value) || 'Invalid Name format',
+                             /^[a-zA-Z\s'-]{2,}$/.test(value) || 'Invalid Name format',
                     }
                  })}
                 />

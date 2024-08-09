@@ -6,6 +6,7 @@ import Logout_button from "./Header/Logout_button";
 import Button from "./Button/Button";
 import Input_field from "./Input_field/Input_field"
 import Select from "./Select_button/Select";
+import RTE from "./RTE/RTE";
 
 
 export {
@@ -16,5 +17,6 @@ export {
     Logout_button,
     Button,
     Input_field,
-    Select
+    Select,
+    RTE,
 }

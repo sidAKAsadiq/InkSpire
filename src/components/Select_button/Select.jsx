@@ -30,7 +30,7 @@ const Select = React.forwardRef( function Select({
     )
 
 
-} ,  )
+} ,  ref)
 
 
 export default Select
