@@ -7,6 +7,11 @@ import Button from "./Button/Button";
 import Input_field from "./Input_field/Input_field"
 import Select from "./Select_button/Select";
 import RTE from "./RTE/RTE";
+import Post_form from "./Post_form/Post_form";
+import Post_card from "./Post_card/Post_card"
+import Protected from "./Auth_layout/Auth_layout";
+import Sign_up from "./Sign up/Sign_up"
+import Login from "./Login/Login"
 
 
 export {
@@ -19,4 +24,9 @@ export {
     Input_field,
     Select,
     RTE,
+    Post_form,
+    Post_card,
+    Protected,
+    Sign_up,
+    Login,
 }

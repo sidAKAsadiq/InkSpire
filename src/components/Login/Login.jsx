@@ -12,18 +12,36 @@ function Login() {
   const {register, handleSubmit} = useForm();
   const [errors, set_errors] = useState("");
 
+  async function temphandleLogout() {
+    try {
+        await auth_service_obj.logout();
+        console.log("Logout successful!");
+    } catch (error) {
+        console.log("Error during logout:", error);
+    }
+}
+
+//temphandleLogout(); // Call the async function
+
+  async function templogCurrentUser() {
+    const currentUser = await auth_service_obj.get_current_user();
+    console.log("In here! :", currentUser);
+}
+
+templogCurrentUser(); // Call the async function
+
   const login = async (data) => {
     set_errors("");
     try {
-      const session = auth_service_obj.login(data);
+      const session = await auth_service_obj.login(data);
       if (session) {
-        const user_data = auth_service_obj.get_current_user();
+        const user_data = await auth_service_obj.get_current_user();
         if (user_data) {
           dispatch(auth_slice_login(user_data));
         }
         navigate("/");
       }
-    } catch (error) {
+    } catch (error) { 
       set_errors(error.message);
     }
   };
@@ -35,7 +53,7 @@ function Login() {
       >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
-            <Logo width="100%" />
+            <Logo width="100%"/>
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight">Login</h2>

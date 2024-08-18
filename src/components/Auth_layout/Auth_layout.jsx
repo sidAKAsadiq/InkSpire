@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom'
 
 function Protected({children , authentication = true}) {
     const dispatch = useDispatch()
-    const is_authenticated = useSelector(state => state.is_authenticated)
+    const is_authenticated = useSelector(state => state.auth.is_authenticated)
     const [loader , set_loader] = useState("true")
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(authentication && is_authenticated === false){
+        if(authentication && is_authenticated !== authentication){
             navigate('/login')
         }
-        else if(!authentication && is_authenticated === true){
+        else if(!authentication && is_authenticated !== authentication){
             navigate('/')
         }
         set_loader(false)

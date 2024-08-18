@@ -1,11 +1,6 @@
 import React, {useId} from 'react'
 
-const Select = React.forwardRef( function Select({
-    options = [],
-    label,
-    className = "",
-    ...props
-}){
+const Select = React.forwardRef(function Select({options = [],label,className = "",...props} , ref){
     const id = useId()
     return(
         <div className='w-full'>
@@ -30,7 +25,7 @@ const Select = React.forwardRef( function Select({
     )
 
 
-} ,  ref)
+})
 
 
 export default Select

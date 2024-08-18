@@ -1,7 +1,8 @@
 import conf from "../conf/conf.js";
 import { Client , Databases, Storage, Query , ID } from "appwrite";
+import auth_service_obj from "./auth.js";
 
-class Service{
+export class Service{
     client = new Client();
     databases;
     bucket; //also called storage
@@ -16,7 +17,7 @@ class Service{
 
     //CRUD operation on articles!
 
-    async create_post({title, slug, content, featured_image, status, owner_id}){
+    async create_post({title, slug, content, featured_image, status, owner_id, posted_by}){
         try {
             return await this.databases.createDocument(
                 conf.appwrite_database_id,
@@ -27,7 +28,8 @@ class Service{
                    content,
                    featured_image,
                    status,
-                   owner_id
+                   owner_id,
+                   posted_by,
                 }
             )
         } catch (error) {
@@ -80,7 +82,7 @@ class Service{
        }        
     }
 
-    async get_all_active_posts(queries = [Query.equal("status" , "active")]){
+    async get_all_active_posts(queries = [Query.equal("status" , "active"), Query.orderDesc("$updatedAt")]){
         try {
             return await this.databases.listDocuments(
                 conf.appwrite_database_id,
@@ -91,6 +93,50 @@ class Service{
             console.log("Error in getting all active posts : ", error)
             return false
         }        
+     }
+
+     async get_searched_posts(search_value){
+        console.log("in get search val : ", search_value)
+        try {
+            const result =  await this.databases.listDocuments(
+                conf.appwrite_database_id,
+                conf.appwrite_collection_id,
+                [
+                    Query.equal("status" , "active"),
+                    Query.or([
+                        Query.contains("title" , search_value),
+                        Query.contains("content" , search_value),
+                    ]),
+                    Query.orderDesc("$updatedAt")   
+                ]
+            )    
+            console.log(result);
+            return result        
+        } catch (error) {
+            console.log("Error in getting searched posts : ", error)
+            return false            
+        }
+     }
+
+     async get_current_user_posts(){
+         const current_user = await auth_service_obj.get_current_user()
+         console.log("in here : " , current_user.$id);
+        try {
+            const result = await this.databases.listDocuments(
+                conf.appwrite_database_id,
+                conf.appwrite_collection_id,
+                [
+                    Query.equal("owner_id" , current_user.$id),
+                    Query.orderDesc("$updatedAt"),
+                ]
+            )
+            console.log(result);
+            return result
+        } catch (error) {
+            console.log("Error in getting current user posts : ", error)
+            return false               
+        }
+
      }
 
      //File upload services - later to be included in sepearte file
@@ -122,10 +168,11 @@ class Service{
      }
 
      async get_file_preview(file_id){
-        return this.bucket.getFilePreview(
-            conf.appwrite_bucket_id,
-            file_id
-        )
+        console.log("In file preview!");
+        const filePreviewUrl = await this.bucket.getFilePreview(conf.appwrite_bucket_id, file_id);
+        console.log("PIC URL: ", filePreviewUrl.toString());
+    
+        return filePreviewUrl.toString();
      }
      
 }

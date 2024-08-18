@@ -12,35 +12,35 @@ class Auth_service{
         this.account = new Account(this.client)
     }
 
-    async create_account ({name, email, password}) {
+    async create_account ({email, password, name}) {
         try {
-            const user_account = await this.account.create(ID.unique(), name, email, password)
+            const user_account = await this.account.create(ID.unique(), email, password, name)
+            if(user_account){
+                return  this.login({email,password})
+            }
+            else{
+                return user_account
+            }
         } catch (error) {
             throw error
-        }
-
-        if(!user_account){
-            return user_account
-        } 
-        //now call another acc!
-        this.login({email,password})
+        }   
 
     }
 
     async login ({email , password}){
         try {
-            const user_login  = await this.account.createEmailPasswordSession(email, password)
+             
+             return await this.account.createEmailPasswordSession(email, password)  
         } catch (error) {
             throw error
         }
 
-        return user_login
 
     }
 
     async get_current_user () {
         try {
-            await this.account.get()    
+            return await this.account.get()    
         } catch (error) {
             console.log("Error in getting current user : ", error)
         }

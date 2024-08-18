@@ -10,6 +10,7 @@ function RTE({
     label,
     default_value = "",
 }) {
+    console.log("In RTE default value : " , default_value)
   return (
     <div className='w-full'>
         {label && 
@@ -21,6 +22,7 @@ function RTE({
         control={control}
         render={({field : {onChange}}) => (
             <Editor
+            apiKey='endz7lbzucvfcd7ryej2xxc9nve6tyb3xp6k5stl7pwczn26'
             initialValue={default_value}
             init={{
                 initialValue : default_value,

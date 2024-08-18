@@ -15,7 +15,7 @@ function Sign_up() {
   const sign_up = async (data) => {
     set_errors("");
     try {
-      const created_user_account = auth_service_obj.create_account(data);
+      const created_user_account = await auth_service_obj.create_account(data);
       if (created_user_account) {
         const user_data = auth_service_obj.get_current_user();
         if (user_data) {
